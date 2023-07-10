@@ -6,4 +6,16 @@ before_install:
   - docker build -t madhuiyan/docker-react -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true madhuiyan/docker-react npm run test
+  - docker run -e CI=true madhuiyan/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "DockerClassApp"
+  env: "DockerClassApp-env"
+  bucket_name: "elasticbeanstalk-us-east-1-900212513007"
+  bucket_path: "DockerClassApp"
+  on:
+    branch:master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
